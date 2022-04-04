@@ -368,15 +368,61 @@ body {
 	}
 });
 </script>
+<script>
+	function playPause() {
+    var music = document.getElementById('music');
+    var music_btn = document.getElementById('music-btn');
+    if (music.paused){
+        music.play();
+        music_btn.src='music/pause.png';
+    }
+    else {
+        music.pause();
+        music_btn.src='music/play.png';
+    }
+}//播放和暂停合一，默认是打开页面点击播放，点击后播放键就会变为暂停键
+//这里只是我想二合一，其实可以分开的，原理一样，把两个判断分到两个按钮，写两个function就ok啦
+var music1 = new Array();
+music1 = ["music/环绕.mp3","music/Beautiful Eyes.mp3","music/Sweet.mp3","music/The Best Day.mp3","music/孤梦.mp3","music/The Way I Loved You.mp3","music/光.mp3","music/This Love.mp3","music/天问.mp3","music/天涯客.flac"];//用数组存储所有歌曲的路径
+//如果是本地的音乐，就写本地的路径，如果你使用了云存储，就把url放在这里就好了
+var num=0;
+var n=music1.length;//获取数组的长度
+function lastmusic() {
+    num = (num+n-1)%n;
+    music.src = music1[num];
+    music.play();
+}//切上一首歌
+function nextmusic() {
+    num = (num+1)%n;
+    music.src = music1[num];
+    music.play();
+}//切下一首歌
+window.onload=function () {
+    music.addEventListener('ended', function () {
+        nextmusic();
+    },false)
+}//自动连播功能，监听播放情况，结束之后就调用下一首歌的函数
 
+</script>
+<style>    
+.div-relative{position:relative; color:#000; border:0px solid #000; width:1200px; height:1100px}    
+.div-b{ position:absolute;  right:0px; top:10px; background:transparent; width:100px; height:50px}    
+.div-a{ position:absolute; left:0px; top:0px; background:transparent; width:1200px; height:675px}     
+</style>  
 </head> 
 <body>
-
+<div>
 <canvas id="canvas">你的浏览器不支持HTML5画布技术，请使用谷歌浏览器。</canvas>
 <img id="scream" src="jz/bg.jpg" alt="The Scream" width="1200" height="675" hidden>
 <canvas id="myCanvas" width="1818" height="1011">
 您的浏览器不支持 HTML5 canvas 标签。</canvas>
-
+	</div>
+<div class="div-b">
+<audio preload id='music'><source src="music/环绕.mp3"></audio>
+<a href="javascript:lastmusic()"><img src="music/previous.png" width="30" height="30" border="0"></a>
+<a href="javascript:playPause()"><img src="music/play.png" width="30" height="30" id="music-btn" border="0"></a>
+<a href="javascript:nextmusic()"><img src="music/next.png" width="30" height="30" border="0"></a>
+</div>
 <script>
 
 var c=document.getElementById("myCanvas");
