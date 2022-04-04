@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>带背景的音乐网页</title>
+
+</head>
+
+<body>
+<script>
+	function playPause() {
+    var music = document.getElementById('music');
+    var music_btn = document.getElementById('music-btn');
+    if (music.paused){
+        music.play();
+        music_btn.src='pause.png';
+    }
+    else {
+        music.pause();
+        music_btn.src='play.png';
+    }
+}//播放和暂停合一，默认是打开页面点击播放，点击后播放键就会变为暂停键
+//这里只是我想二合一，其实可以分开的，原理一样，把两个判断分到两个按钮，写两个function就ok啦
+var music1 = new Array();
+music1 = ["环绕.mp3","Beautiful Eyes.mp3","Sweet.mp3","The Best Day.mp3","孤梦.mp3","The Way I Loved You.mp3","光.mp3","This Love.mp3","天问.mp3","天涯客.flac"];//用数组存储所有歌曲的路径
+//如果是本地的音乐，就写本地的路径，如果你使用了云存储，就把url放在这里就好了
+var num=0;
+var n=music1.length;//获取数组的长度
+function lastmusic() {
+    num = (num+n-1)%n;
+    music.src = music1[num];
+    music.play();
+}//切上一首歌
+function nextmusic() {
+    num = (num+1)%n;
+    music.src = music1[num];
+    music.play();
+}//切下一首歌
+window.onload=function () {
+    music.addEventListener('ended', function () {
+        nextmusic();
+    },false)
+}//自动连播功能，监听播放情况，结束之后就调用下一首歌的函数
+
+</script>	
+<audio preload id='music'><source src="环绕.mp3"></audio>
+<a href="javascript:lastmusic()"><img src="previous.png" width="96" height="96" border="0"></a>
+<a href="javascript:playPause()"><img src="play.png" width="96" height="96" id="music-btn" border="0"></a>
+<a href="javascript:nextmusic()"><img src="next.png" width="96" height="96" border="0"></a>
+//插入图片且引用上面的函数，实现功能
+
+</body>
+</html>
